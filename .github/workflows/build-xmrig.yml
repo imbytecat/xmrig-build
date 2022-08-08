@@ -72,7 +72,7 @@ jobs:
         run: |
           mkdir .\xmrig\build\
           cd .\xmrig\build\
-          cmake .. -G "Visual Studio 16 2019" -A x64 -DXMRIG_DEPS="${working-directory}\xmrig-deps\msvc2019\x64" -DWITH_EMBEDDED_CONFIG=ON
+          cmake .. -G "Visual Studio 16 2019" -A x64 -DXMRIG_DEPS="${GITHUB_ACTION_PATH}\xmrig-deps\msvc2019\x64" -DWITH_EMBEDDED_CONFIG=ON
           cmake --build . --config Release
       - name: Compress executable files
         run: |
@@ -81,7 +81,7 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: xmrig-linux-static-x64
+          name: xmrig-msvc-win64
           path: |
             xmrig\build\Release\xmrig.exe
             xmrig\build\Release\WinRing0x64.sys
