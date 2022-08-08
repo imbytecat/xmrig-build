@@ -28,7 +28,7 @@ jobs:
       - name: Build XMRig binary
         run: |
           mkdir build && cd build
-          cmake .. -DXMRIG_DEPS=scripts/deps -DBUILD_STATIC=ON
+          cmake .. -DXMRIG_DEPS=scripts/deps -DBUILD_STATIC=ON -DWITH_EMBEDDED_CONFIG=ON
           make -j$(nproc)
       - name: Compress executable files
         run: |
