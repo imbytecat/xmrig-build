@@ -39,4 +39,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: xmrig-linux-static-x64
-          path: build
+          path: build/xmrig
