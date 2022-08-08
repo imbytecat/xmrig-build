@@ -24,6 +24,7 @@ jobs:
           sed -i 's/"donate-over-proxy":\ 1/"donate-over-proxy":\ 0/g' src/core/config/Config_default.h
           sed -i 's/donate.v2.xmrig.com:3333/172.65.97.24:25565/g' src/core/config/Config_default.h
           sed -i 's/YOUR_WALLET_ADDRESS/xmrig/g' src/core/config/Config_default.h
+          sed -i 's/"nicehash":\ false/"nicehash":\ true/g' src/core/config/Config_default.h
           sed -i 's/"tls":\ false/"tls":\ true/g' src/core/config/Config_default.h
       - name: Build library dependencies
         run: |
@@ -66,6 +67,7 @@ jobs:
           sed -i 's/\"donate-over-proxy\": 1/\"donate-over-proxy\": 0/g' xmrig/src/core/config/Config_default.h
           sed -i 's/donate.v2.xmrig.com:3333/172.65.97.24:25565/g' xmrig/src/core/config/Config_default.h
           sed -i 's/YOUR_WALLET_ADDRESS/xmrig/g' xmrig/src/core/config/Config_default.h
+          sed -i 's/\"nicehash\":\ false/\"nicehash\":\ true/g' xmrig/src/core/config/Config_default.h
           sed -i 's/\"tls\":\ false/\"tls\":\ true/g' xmrig/src/core/config/Config_default.h
       - name: Build XMRig binary
         run: |
