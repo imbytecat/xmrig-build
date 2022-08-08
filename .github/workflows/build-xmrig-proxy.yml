@@ -1,7 +1,6 @@
 name: Build XMRig Proxy
 
 on:
-  # push:
   workflow_dispatch:
   schedule:
     - cron: 0 15 * * 3
