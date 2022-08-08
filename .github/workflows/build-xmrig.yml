@@ -72,6 +72,8 @@ jobs:
         run: |
           mkdir .\xmrig\build\
           cd .\xmrig\build\
+          echo ${env:GITHUB_ACTION_PATH}
+          echo ${pwd}
           cmake .. -G "Visual Studio 16 2019" -A x64 -DXMRIG_DEPS="${env:GITHUB_ACTION_PATH}\xmrig-deps\msvc2019\x64" -DWITH_EMBEDDED_CONFIG=ON
           cmake --build . --config Release
       - name: Compress executable files
