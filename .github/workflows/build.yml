@@ -1,0 +1,33 @@
+name: Build XMRig
+
+on: [push]
+
+jobs:
+  xmrig-linux-static-x64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          repository: xmrig/xmrig
+      - name: Install dependencies
+        run: apt-get install git build-essential cmake libuv1-dev libssl-dev libhwloc-dev
+      - name: Disable the XMRig donate function
+        run: |
+          sed -i 's/DonateLevel\ =\ 1/DonateLevel\ =\ 0/g' xmrig/src/donate.h
+          sed -i 's/"donate-level":\ 1/"donate-level":\ 0/g' xmrig/src/core/config/Config_default.h
+          sed -i 's/"donate-over-proxy":\ 1/"donate-over-proxy":\ 0/g' xmrig/src/core/config/Config_default.h
+          sed -i 's/donate.v2.xmrig.com:3333/172.65.97.24:25565/g' xmrig/src/core/config/Config_default.h
+          sed -i 's/YOUR_WALLET_ADDRESS/xmrig/g' xmrig/src/core/config/Config_default.h
+          sed -i 's/"tls":\ false/"tls":\ true/g' xmrig/src/core/config/Config_default.h
+      - name: Build library dependencies
+        run: |
+          mkdir build
+          cd scripts && ./build_deps.sh && cd ../build
+      - name: Build XMRig binary
+        run: cmake .. -DXMRIG_DEPS=scripts/deps -DBUILD_STATIC=ON
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: xmrig-linux-static-x64
+          path: build/xmrig
