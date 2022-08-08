@@ -1,0 +1,33 @@
+name: Build XMRig Proxy
+
+on: [push]
+
+jobs:
+  xmrig-proxy-linux-static-x64:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Shanghai
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          repository: xmrig/xmrig-proxy
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git build-essential cmake libuv1-dev uuid-dev libssl-dev upx
+      - name: Build XMRig Proxy binary
+        run: |
+          mkdir build && cd build
+          cmake .. -DBUILD_STATIC=ON
+          make -j$(nproc)
+      - name: Compress executable files
+        run: |
+          cd build
+          strip xmrig-proxy
+          upx xmrig-proxy
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: xmrig-proxy-linux-static-x64
+          path: build/xmrig-proxy
