@@ -11,7 +11,9 @@ jobs:
         with:
           repository: xmrig/xmrig
       - name: Install dependencies
-        run: sudo apt-get install git build-essential cmake libuv1-dev libssl-dev libhwloc-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git build-essential cmake libuv1-dev libssl-dev libhwloc-dev
       - name: Disable the XMRig donate function
         run: |
           sed -i 's/DonateLevel\ =\ 1/DonateLevel\ =\ 0/g' src/donate.h
@@ -22,10 +24,11 @@ jobs:
           sed -i 's/"tls":\ false/"tls":\ true/g' src/core/config/Config_default.h
       - name: Build library dependencies
         run: |
-          mkdir build
-          cd scripts && ./build_deps.sh && cd ../build
+          cd scripts && ./build_deps.sh
       - name: Build XMRig binary
-        run: cmake .. -DXMRIG_DEPS=scripts/deps -DBUILD_STATIC=ON
+        run: |
+          mkdir build && cd build
+          cmake .. -DXMRIG_DEPS=scripts/deps -DBUILD_STATIC=ON
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
