@@ -13,7 +13,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y git build-essential cmake libuv1-dev libssl-dev libhwloc-dev
+          sudo apt-get install -y git build-essential cmake libuv1-dev libssl-dev libhwloc-dev upx
       - name: Disable the XMRig donate function
         run: |
           sed -i 's/DonateLevel\ =\ 1/DonateLevel\ =\ 0/g' src/donate.h
@@ -29,6 +29,12 @@ jobs:
         run: |
           mkdir build && cd build
           cmake .. -DXMRIG_DEPS=scripts/deps -DBUILD_STATIC=ON
+          make -j$(nproc)
+      - name: Compress executable files
+        run: |
+          cd build
+          strip xmrig
+          upx xmrig
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
